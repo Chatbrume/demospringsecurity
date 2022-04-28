@@ -2,18 +2,20 @@ package eu.ensup.demospringsecurity.controller;
 
 import eu.ensup.demospringsecurity.domain.JsonConverter;
 import eu.ensup.demospringsecurity.domain.Student;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j2
+
 @RestController
 @RequestMapping("/api/v1/student")
 public class StudentController
 {
+    private static Logger LOGGER = LogManager.getLogger();
     private static String PATH = "listStudent.json";
 
     @GetMapping("/")
@@ -23,7 +25,7 @@ public class StudentController
         try {
             students = JsonConverter.convertJsonFileToStudents(PATH);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         return students;
@@ -36,7 +38,7 @@ public class StudentController
         try {
             students = JsonConverter.convertJsonFileToStudents(PATH);
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         return students.stream().filter(e -> e.getId() == id).findAny().orElse(null);
